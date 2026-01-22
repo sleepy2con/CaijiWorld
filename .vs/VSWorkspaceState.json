@@ -1,0 +1,17 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "build\\Debug",
+      "build\\install\\Debug",
+      "build\\Release",
+      "build\\install\\Release"
+    ]
+  },
+  "ExpandedNodes": [
+    "",
+    "\\build",
+    "\\src"
+  ],
+  "SelectedNode": "\\CMakeSettings.json",
+  "PreviewInSolutionExplorer": false
+}
