@@ -1,0 +1,12 @@
+/build/
+
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# 可执行文件
+*.exe
+*.out
+*.obj
+*.o
