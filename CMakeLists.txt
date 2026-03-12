@@ -1,14 +1,43 @@
-cmake_minimum_required(VERSION 3.20)
-# LANGUAGES CXX:这个工程只使用 C++ 语言，让 CMake 只初始化 C++ 编译器和相关规则
+cmake_minimum_required(VERSION 3.15)
+
+#只启用cpp编译器,不去用C编译器,配置阶段更快
+# CaijiWorld项目名字,作为IDE工程名
 project(CaijiWorld LANGUAGES CXX)
 
+if(MSVC)
+    set(CMAKE_GENERATOR_PLATFORM x64)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
+# 要么用我指定的版本,要么编译失败
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(CaijiWorld
-    src/main.cpp
+# 源文件
+file(GLOB_RECURSE CAIJIWORLD_SRC_FILES
+    src/*.cpp
 )
 
-target_include_directories(CaijiWorld PRIVATE
-    include
+# 将CAIJIWORLD_SRC_FILES中的所有cpp文件编译链接成可执行文件,一个构建目标
+# 生成CaijiWorld这个可执行程序(作为一个target,
+# 也用于后面编译时target_include_directories的private修复符号,表示仅用于此target(构建目标))
+add_executable(${PROJECT_NAME}
+    ${CAIJIWORLD_SRC_FILES}
+)
+# 头文件不需要编译,告诉编译器编译源文件时,头文件在哪,用于CaijiWorld这个目标程序
+target_include_directories(CaijiWorld
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    #${PROJECT_SOURCE_DIR}/include/glfw
+)
+
+
+#link_directories(${PROJECT_SOURCE_DIR}/third/SDL3/lib)
+
+# 需要配置环境变量可能？或者用一些定义路径的方式
+#find_package(SDL3 REQUIRED)
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/third/SDL3-3.4.0/SDL3.lib
+    opengl32.lib
 )

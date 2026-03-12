@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_CaijiWorld: phony || .
 
 build CMakeFiles\CaijiWorld.dir\src\main.cpp.obj: CXX_COMPILER__CaijiWorld_unscanned_Debug E$:\AWorkSpace\GamePro\CaijiWorld2\CaijiWorld\src\main.cpp || cmake_object_order_depends_target_CaijiWorld
   CONFIG = Debug
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd
   INCLUDES = -IE:\AWorkSpace\GamePro\CaijiWorld2\CaijiWorld\include
   OBJECT_DIR = CMakeFiles\CaijiWorld.dir
   OBJECT_FILE_DIR = CMakeFiles\CaijiWorld.dir\src
@@ -66,11 +66,11 @@ build CMakeFiles\CaijiWorld.dir\src\main.cpp.obj: CXX_COMPILER__CaijiWorld_unsca
 #############################################
 # Link the executable CaijiWorld.exe
 
-build CaijiWorld.exe: CXX_EXECUTABLE_LINKER__CaijiWorld_Debug CMakeFiles\CaijiWorld.dir\src\main.cpp.obj
+build CaijiWorld.exe: CXX_EXECUTABLE_LINKER__CaijiWorld_Debug CMakeFiles\CaijiWorld.dir\src\main.cpp.obj | E$:\AWorkSpace\GamePro\CaijiWorld2\CaijiWorld\third\SDL3-3.4.0\SDL3.lib
   CONFIG = Debug
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_LIBRARIES = E:\AWorkSpace\GamePro\CaijiWorld2\CaijiWorld\third\SDL3-3.4.0\SDL3.lib  opengl32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   OBJECT_DIR = CMakeFiles\CaijiWorld.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
