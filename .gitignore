@@ -1,3 +1,4 @@
+build/
 # Visual Studio
 .vs/
 *.suo

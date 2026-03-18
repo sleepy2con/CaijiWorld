@@ -6,6 +6,8 @@ project(CaijiWorld LANGUAGES CXX)
 
 if(MSVC)
     set(CMAKE_GENERATOR_PLATFORM x64)
+    # 加上下面这一行，强制编译器使用 UTF-8 编码
+    add_compile_options(/utf-8)
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -23,6 +25,8 @@ file(GLOB_RECURSE CAIJIWORLD_SRC_FILES
 add_executable(${PROJECT_NAME}
     ${CAIJIWORLD_SRC_FILES}
 )
+set(SPDLOG_HEADER_ONLY OFF)
+
 # 头文件不需要编译,告诉编译器编译源文件时,头文件在哪,用于CaijiWorld这个目标程序
 target_include_directories(CaijiWorld
     PRIVATE
@@ -40,5 +44,6 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/third/SDL3-3.4.0/SDL3.lib
     ${PROJECT_SOURCE_DIR}/third/SDL3_image-3.4.0/SDL3_image.lib
+    ${PROJECT_SOURCE_DIR}/third/spdlog/spdlogd.lib
     opengl32.lib
 )

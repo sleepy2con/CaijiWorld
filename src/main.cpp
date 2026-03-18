@@ -3,6 +3,9 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "spdlog/spdlog.h"
+#include "spdlog/cfg/env.h"   // support for loading levels from the environment variable
+#include "spdlog/fmt/ostr.h"  // support for user defined types
 
 const int TILE_SIZE = 16;
 const int MAP_W = 300;
@@ -20,29 +23,29 @@ struct Unit {
 
 int main(int argc, char* argv[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    spdlog::set_level(spdlog::level::debug);  // Set global log level to info
+    spdlog::debug("hello the game!");
 
-    // 注意：SDL3_image 的 IMG_Init 逻辑与 SDL2 有所不同
-    // 如果报错找不到 IMG_INIT_PNG，请检查 SDL_image 版本或直接使用 IMG_Load
+    SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window* window = SDL_CreateWindow("300x300 Grid Demo", SCREEN_W, SCREEN_H, 0);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
 
-    // --- 修复点 1: 移除重复定义，直接加载 ---
     // 建议统一使用 IMG_Load，它可以处理 BMP 和 PNG
     SDL_Surface* surf_grass = IMG_Load("../../assets/pics/grass.png");
     if (!surf_grass) {
-        // 如果 PNG 加载失败，尝试加载 BMP（作为备份方案）
-        surf_grass = SDL_LoadBMP("../../assets/pics/grass.bmp");
+        spdlog::error("load water pic failed");
+        return -1;
     }
 
     SDL_Surface* surf_water = IMG_Load("../../assets/pics/water.png");
     if (!surf_water) {
-        surf_water = SDL_LoadBMP("../../assets/pics/water.bmp");
+        spdlog::error("load water pic failed");
+        return -1;
     }
 
     if (!surf_grass || !surf_water) {
-        SDL_Log("Texture load failed: %s", SDL_GetError());
+        spdlog::error("Texture load failed: %s", SDL_GetError());
     }
 
     SDL_Texture* tex_grass = SDL_CreateTextureFromSurface(renderer, surf_grass);
