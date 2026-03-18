@@ -7,12 +7,16 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3\\SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\SDL3\\SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3_image\\SDL_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\SDL3_image\\SDL_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3\\SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\SDL3\\SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|CMake \u6982\u8FF0\u9875||{B1CAA5B0-FEB1-4350-8AB9-F895876842F2}"
@@ -28,21 +32,29 @@
           "SelectedChildIndex": 3,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{c6f34f0d-7ae5-4f3a-be61-fe0c21ae9eb8}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SDL_image.h",
+              "DocumentMoniker": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3_image\\SDL_image.h",
+              "RelativeDocumentMoniker": "include\\SDL3_image\\SDL_image.h",
+              "ToolTip": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3_image\\SDL_image.h",
+              "RelativeToolTip": "include\\SDL3_image\\SDL_image.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-03-18T14:40:13.224Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "SDL.h",
               "DocumentMoniker": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3\\SDL.h",
               "RelativeDocumentMoniker": "include\\SDL3\\SDL.h",
               "ToolTip": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\include\\SDL3\\SDL.h",
               "RelativeToolTip": "include\\SDL3\\SDL.h",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAACwAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-03-12T14:38:58.259Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T14:38:58.259Z"
             },
             {
               "$type": "Document",
@@ -52,7 +64,7 @@
               "RelativeDocumentMoniker": "CMakeLists.txt",
               "ToolTip": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\CMakeLists.txt",
               "RelativeToolTip": "CMakeLists.txt",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAACoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAADwvxwAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2026-03-12T14:17:02.953Z",
               "EditorCaption": ""
@@ -65,20 +77,19 @@
               "RelativeDocumentMoniker": "src\\main.cpp",
               "ToolTip": "E:\\AWorkSpace\\GamePro\\CaijiWorld2\\CaijiWorld\\src\\main.cpp",
               "RelativeToolTip": "src\\main.cpp",
-              "ViewState": "AgIAADwAAAAAAAAAAAAAAB0AAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAgwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-01-22T14:29:51.536Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "CMake \u6982\u8FF0\u9875",
               "DocumentMoniker": "CMake \u6982\u8FF0\u9875",
               "ToolTip": "CMake \u6982\u8FF0\u9875",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-01-22T14:15:32.436Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-22T14:15:32.436Z"
             }
           ]
         }

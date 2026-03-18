@@ -1,3 +1,7 @@
 # ninja log v6
-1	289	7950302588975981	CMakeFiles/CaijiWorld.dir/src/main.cpp.obj	389741cc63834eb0
-290	699	7950302591866716	CaijiWorld.exe	494b519da12b4b19
+3	670	7952122356494364	CMakeFiles/CaijiWorld.dir/src/main.cpp.obj	389741cc63834eb0
+671	1078	7952122363175666	CaijiWorld.exe	494b519da12b4b19
+3	336	7955481652961434	CMakeFiles/CaijiWorld.dir/src/main.cpp.obj	389741cc63834eb0
+336	767	7955481656300911	CaijiWorld.exe	62270e90508e044c
+2	307	7955482211576053	CMakeFiles/CaijiWorld.dir/src/main.cpp.obj	389741cc63834eb0
+307	504	7955482214621483	CaijiWorld.exe	62270e90508e044c

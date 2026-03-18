@@ -39,5 +39,6 @@ target_include_directories(CaijiWorld
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/third/SDL3-3.4.0/SDL3.lib
+    ${PROJECT_SOURCE_DIR}/third/SDL3_image-3.4.0/SDL3_image.lib
     opengl32.lib
 )

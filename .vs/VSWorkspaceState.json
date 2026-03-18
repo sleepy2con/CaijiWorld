@@ -9,8 +9,12 @@
   },
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\assets",
+    "\\assets\\art",
+    "\\assets\\pics",
+    "\\include",
+    "\\src",
+    "\\third"
   ],
-  "SelectedNode": "\\docs",
   "PreviewInSolutionExplorer": false
 }
