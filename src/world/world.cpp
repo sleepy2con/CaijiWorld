@@ -1,32 +1,24 @@
+
+#include "world/world.h" // 1st
+#include "constant/constant.h"
+#include "world/tile.h"
+
+#include "spdlog/spdlog.h" // 3st
+
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include <vector>
+
+#include <vector>	// 4st
 #include <cstdlib>
 #include <ctime>
 #include <memory>
-#include "spdlog/spdlog.h"
-//#include "spdlog/cfg/env.h"   // support for loading levels from the environment variable
-//#include "spdlog/fmt/ostr.h"  // support for user defined types
 
-const int TILE_SIZE = 16;
-const int MAP_W = 300;
-const int MAP_H = 300;
-const int SCREEN_W = 800;
-const int SCREEN_H = 600;
 
-struct Tile {
-	std::shared_ptr<SDL_Texture> tex;
-};
 
-struct Unit {
-	float x, y;
-};
 
-int main(int argc, char* argv[])
+
+World::World(int width_, int height_)
 {
-	spdlog::set_level(spdlog::level::debug);  // Set global log level to info
-	spdlog::debug("hello the game!");
-
 	SDL_Init(SDL_INIT_VIDEO);
 
 	std::unique_ptr <SDL_Window, decltype(&SDL_DestroyWindow)> window(SDL_CreateWindow("300x300 Grid Demo", SCREEN_W, SCREEN_H, 0), SDL_DestroyWindow);
@@ -35,13 +27,13 @@ int main(int argc, char* argv[])
 	std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surf_grass(IMG_Load("../../assets/pics/grass.png"), SDL_DestroySurface);
 	if (!surf_grass) {
 		spdlog::error("load water pic failed");
-		return -1;
+		return;
 	}
 
 	std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surf_water(IMG_Load("../../assets/pics/water.png"), SDL_DestroySurface);
 	if (!surf_water) {
 		spdlog::error("load water pic failed");
-		return -1;
+		return;
 	}
 	if (!surf_grass || !surf_water) {
 		spdlog::error("Texture load failed: %s", SDL_GetError());
@@ -51,18 +43,18 @@ int main(int argc, char* argv[])
 	std::shared_ptr<SDL_Texture>tex_water(SDL_CreateTextureFromSurface(renderer.get(), surf_water.get()), SDL_DestroyTexture);
 
 	// µØÍ¼´´½¨
-	std::vector<std::vector<Tile>> map(MAP_H, std::vector<Tile>(MAP_W));
+	std::vector<std::vector<Tile>> map(height_, std::vector<Tile>(width_));
 	srand((unsigned int)time(nullptr));
-	for (int y = 0; y < MAP_H; y++) {
-		for (int x = 0; x < MAP_W; x++) {
+	for (int y = 0; y < height_; y++) {
+		for (int x = 0; x < width_; x++) {
 			map[y][x].tex = (rand() % 5 == 0) ? tex_water : tex_grass;
 		}
 	}
 
 	std::vector<Unit> units(100);
 	for (auto& u : units) {
-		u.x = (float)(rand() % (MAP_W * TILE_SIZE));
-		u.y = (float)(rand() % (MAP_H * TILE_SIZE));
+		u.x = (float)(rand() % (width_ * TILE_SIZE));
+		u.y = (float)(rand() % (height_ * TILE_SIZE));
 	}
 
 	float camX = 0, camY = 0;
@@ -107,6 +99,4 @@ int main(int argc, char* argv[])
 		SDL_RenderPresent(renderer.get());
 	}
 
-	SDL_Quit();
-	return 0;
 }
