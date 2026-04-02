@@ -17,6 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 源文件
 file(GLOB_RECURSE CAIJIWORLD_SRC_FILES
     src/*.cpp
+    third/imgui/*.cpp
 )
 
 # 将CAIJIWORLD_SRC_FILES中的所有cpp文件编译链接成可执行文件,一个构建目标
@@ -31,7 +32,7 @@ set(SPDLOG_HEADER_ONLY OFF)
 target_include_directories(CaijiWorld
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    #${PROJECT_SOURCE_DIR}/include/glfw
+    ${PROJECT_SOURCE_DIR}/include/imgui
 )
 
 
@@ -47,3 +48,14 @@ target_link_libraries(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/third/spdlog/spdlogd.lib
     opengl32.lib
 )
+
+if(WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${PROJECT_SOURCE_DIR}/third/SDL3-3.4.0/SDL3.dll"      # 源路径
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>" # 目标路径：可执行文件所在目录
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${PROJECT_SOURCE_DIR}/third/SDL3_image-3.4.0/SDL3_image.dll"      # 源路径
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>" # 目标路径：可执行文件所在目录
+    )
+endif()
