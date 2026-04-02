@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 {
 	spdlog::set_level(spdlog::level::debug);
 	spdlog::debug("hello the game!");
-	World _world(MAP_W, MAP_H);
+	World _world(kWindowWidth, kWindowHeight);
 	_world.run();
 
 	return 0;

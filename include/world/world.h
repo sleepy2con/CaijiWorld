@@ -20,10 +20,13 @@ public:
 	~World();
 	void run();
 private:
-	std::vector<std::vector<Tile>> m_world;
-	std::vector<Unit> m_units;
-	std::unique_ptr <SDL_Window, decltype(&SDL_DestroyWindow)> m_window;
-	std::unique_ptr <SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_renderer;
+	// 存放地图网格纹理数据的数组
+	std::vector<std::vector<Tile>> world_tile_;
+	std::vector<Unit> units_;
+	std::unique_ptr <SDL_Window, decltype(&SDL_DestroyWindow)> window_;
+	std::unique_ptr <SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer_;
+	int width_;
+	int height_;
 };
 
 #endif // !WORLD_H
