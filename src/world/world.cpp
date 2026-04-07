@@ -100,49 +100,100 @@ World::~World()
 
 void World::run()
 {
-	float camX = 0, camY = 0;
+	float camX = 0.0f, camY = 0.0f;
 	bool running = true;
+
+	// 用于计算 Delta Time（两帧之间的时间差），保证不同帧率下运动速度一致
+	Uint64 last_time = SDL_GetTicks();
+
 	// 游戏主循环
 	while (running) {
+		// 1. 处理 Delta Time
+		Uint64 current_time = SDL_GetTicks();
+		float deltaTime = (current_time - last_time) / 1000.0f; // 秒为单位
+		last_time = current_time;
+
+		// 2. 事件处理
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
-			if (e.type == SDL_EVENT_QUIT) running = false;
+			// 将事件传递给 ImGui 处理（如点击按钮、拖动窗口）
 			ImGui_ImplSDL3_ProcessEvent(&e);
-			if (e.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && e.window.windowID == SDL_GetWindowID(window_.get()))
-				running = true;
+
+			if (e.type == SDL_EVENT_QUIT) {
+				running = false;
+			}
+			if (e.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && e.window.windowID == SDL_GetWindowID(window_.get())) {
+				running = false;
+			}
 		}
 
+		// 3. 启动 ImGui 新帧 (必须在绘制前调用)
+		//确保字体纹理已加载到 GPU。
+		//准备图形资源。 准备好 SDL_Renderer 所需的绘制状态。
+		ImGui_ImplSDLRenderer3_NewFrame(); // (渲染层)
+		// 处理输入设备和时间戳。
+		//具体干了什么：* 计算两帧之间的时间差（Delta Time），用于动画平滑。
+		//    更新鼠标位置、按键状态、游戏手柄输入。
+		//    处理窗口大小改变、缩放比例（DPI）等 SDL 窗口事件。
+		ImGui_ImplSDL3_NewFrame(); // (后端/输入层)
+		ImGui::NewFrame();			// (核心逻辑层)
+
+		// 示例：添加一个简单的 ImGui 调试窗口
+		ImGui::Begin("Debug Tools");
+		ImGui::Text("Camera Pos: (%.1f, %.1f)", camX, camY);
+		// 决定地图视角的变量camX，camY，
+		ImGui::SliderFloat("Camera X", &camX, 0, (float)(MAP_W * TILE_SIZE - kWindowWidth));
+		ImGui::SliderFloat("Camera Y", &camY, 0, (float)(MAP_H * TILE_SIZE - kWindowHeight));
+		ImGui::End();
+
+		// 4. 更新逻辑：移动单位
+		// 使用 deltaTime 替代固定步长，确保平滑
 		for (auto& u : units_) {
-			u.x += ((rand() % 3) - 1) * 0.5f;
-			u.y += ((rand() % 3) - 1) * 0.5f;
+			u.x += ((rand() % 3) - 1) * 50.0f * deltaTime; // 每秒移动约 50 像素
+			u.y += ((rand() % 3) - 1) * 50.0f * deltaTime;
 		}
 
+		// 5. 渲染准备
 		SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
 		SDL_RenderClear(renderer_.get());
 
-		// 视口裁剪渲染 | 只让摄像机范围内的地图格子参与渲染，提升性能
-		int startX = (int)(camX / TILE_SIZE);
-		int startY = (int)(camY / TILE_SIZE);
-		int endX = (int)((camX + kWindowWidth) / TILE_SIZE + 1);
-		int endY = (int)((camY + kWindowHeight) / TILE_SIZE + 1);
+		// 6. 视口裁剪渲染（Culling）
+		// 计算当前摄像机看到的瓦片索引范围
+		int startX = std::max(0, (int)(camX / TILE_SIZE));
+		int startY = std::max(0, (int)(camY / TILE_SIZE));
+		// +2 是为了防止边缘切碎感（多画 1-2 格缓冲区）
+		int endX = std::min(MAP_W, (int)((camX + kWindowWidth) / TILE_SIZE) + 2);
+		int endY = std::min(MAP_H, (int)((camY + kWindowHeight) / TILE_SIZE) + 2);
 
-		// 越界检查
-		if (startX < 0) startX = 0;
-		if (startY < 0) startY = 0;
-
-		for (int y = startY; y < endY && y < MAP_H; y++) {
-			for (int x = startX; x < endX && x < MAP_W; x++) {
-				SDL_FRect r = { (float)x * TILE_SIZE - camX, (float)y * TILE_SIZE - camY, (float)TILE_SIZE, (float)TILE_SIZE };
+		for (int y = startY; y < endY; y++) {
+			for (int x = startX; x < endX; x++) {
+				// 计算每个格子的屏幕渲染位置：世界坐标 - 摄像机坐标
+				SDL_FRect r = {
+					(float)x * TILE_SIZE - camX,
+					(float)y * TILE_SIZE - camY,
+					(float)TILE_SIZE,
+					(float)TILE_SIZE
+				};
 				SDL_RenderTexture(renderer_.get(), world_tile_[y][x].tex.get(), NULL, &r);
 			}
 		}
 
+		// 7. 渲染单位
 		SDL_SetRenderDrawColor(renderer_.get(), 255, 0, 0, 255);
 		for (auto& u : units_) {
+			// 同样需要进行摄像机偏移处理
 			SDL_FRect r = { u.x - camX, u.y - camY, 8.0f, 8.0f };
-			SDL_RenderFillRect(renderer_.get(), &r);
+			// 简单的边界剔除检查：如果单位不在屏幕内则不调用 Draw 函数
+			if (r.x + r.w > 0 && r.x < kWindowWidth && r.y + r.h > 0 && r.y < kWindowHeight) {
+				SDL_RenderFillRect(renderer_.get(), &r);
+			}
 		}
 
+		// 8. 渲染 ImGui 面板 (在所有游戏元素之后渲染，保证 UI 在最上层)
+		ImGui::Render();
+		ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer_.get());
+
+		// 9. 提交渲染
 		SDL_RenderPresent(renderer_.get());
 	}
 }
