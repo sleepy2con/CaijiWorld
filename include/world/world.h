@@ -27,6 +27,12 @@ private:
 	std::unique_ptr <SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer_;
 	int width_;
 	int height_;
+
+	// 棋子纹理
+	std::shared_ptr<SDL_Texture> chess_texture_;
+	// 棋子位置（固定在 0,0）
+	float chess_x_ = 0.0f;
+	float chess_y_ = 0.0f;
 };
 
 #endif // !WORLD_H

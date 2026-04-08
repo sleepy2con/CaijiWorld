@@ -63,9 +63,23 @@ renderer_(SDL_CreateRenderer(window_.get(), nullptr), SDL_DestroyRenderer)
 		}
 	}
 
+	// ================== 加载棋子图片 ==================
+	std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surf_chess(
+		IMG_Load("../../assets/pics/chess.png"),  // 改成你棋子的真实路径
+		SDL_DestroySurface
+	);
+	if (!surf_chess) {
+		spdlog::error("load chess.png failed");
+		return;
+	}
+	chess_texture_ = std::shared_ptr<SDL_Texture>(
+		SDL_CreateTextureFromSurface(renderer_.get(), surf_chess.get()),
+		SDL_DestroyTexture
+	);
+
 	for (auto& u : units_) {
-		u.x = (float)(rand() % (width_ * TILE_SIZE));
-		u.y = (float)(rand() % (height_ * TILE_SIZE));
+		u.x = (float)(rand() % (width_ * kTileSize));
+		u.y = (float)(rand() % (height_ * kTileSize));
 	}
 
 
@@ -142,8 +156,8 @@ void World::run()
 		ImGui::Begin("Debug Tools");
 		ImGui::Text("Camera Pos: (%.1f, %.1f)", camera_x, camera_y);
 		// 决定地图视角的变量camX，camY，
-		ImGui::SliderFloat("Camera X", &camera_x, 0, (float)(kMapWidth * TILE_SIZE - kWindowWidth));
-		ImGui::SliderFloat("Camera Y", &camera_y, 0, (float)(kMapHeight * TILE_SIZE - kWindowHeight));
+		ImGui::SliderFloat("Camera X", &camera_x, 0, (float)(kMapWidth * kTileSize - kWindowWidth));
+		ImGui::SliderFloat("Camera Y", &camera_y, 0, (float)(kMapHeight * kTileSize - kWindowHeight));
 		ImGui::End();
 
 		// 4. 更新逻辑：移动单位
@@ -159,25 +173,34 @@ void World::run()
 
 		// 6. 视口裁剪渲染（Culling）
 		// 计算当前摄像机看到的瓦片索引范围
-		int startX = std::max(0, (int)(camera_x / TILE_SIZE));
-		int startY = std::max(0, (int)(camera_y / TILE_SIZE));
+		int startX = std::max(0, (int)(camera_x / kTileSize));
+		int startY = std::max(0, (int)(camera_y / kTileSize));
 		// +2 是为了防止边缘切碎感（多画 1-2 格缓冲区）
-		int endX = std::min(kMapWidth, (int)((camera_x + kWindowWidth) / TILE_SIZE) + 2);
-		int endY = std::min(kMapHeight, (int)((camera_y + kWindowHeight) / TILE_SIZE) + 2);
+		int endX = std::min(kMapWidth, (int)((camera_x + kWindowWidth) / kTileSize) + 2);
+		int endY = std::min(kMapHeight, (int)((camera_y + kWindowHeight) / kTileSize) + 2);
 
 		for (int y = startY; y < endY; y++) {
 			for (int x = startX; x < endX; x++) {
 				// 计算每个格子的屏幕渲染位置：世界坐标 - 摄像机坐标
 				SDL_FRect r = {
-					(float)x * TILE_SIZE - camera_x,
-					(float)y * TILE_SIZE - camera_y,
-					(float)TILE_SIZE,
-					(float)TILE_SIZE
+					(float)x * kTileSize - camera_x,
+					(float)y * kTileSize - camera_y,
+					(float)kTileSize,
+					(float)kTileSize
 				};
 				SDL_RenderTexture(renderer_.get(), world_tile_[y][x].tex.get(), NULL, &r);
 			}
 		}
-
+		// ================== 渲染棋子（在地图 0,0 点） ==================
+		if (chess_texture_) {
+			SDL_FRect chess_rect = {
+				chess_x_ - camera_x,          // X：减去相机偏移
+				chess_y_ - camera_y,          // Y：减去相机偏移
+				kTileSize,                        // 棋子宽度（自己改大小）
+				kTileSize                         // 棋子高度
+			};
+			SDL_RenderTexture(renderer_.get(), chess_texture_.get(), nullptr, &chess_rect);
+		}
 		// 7. 渲染单位
 		SDL_SetRenderDrawColor(renderer_.get(), 255, 0, 0, 255);
 		for (auto& u : units_) {

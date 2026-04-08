@@ -2,7 +2,7 @@
 #define CONSTANT_H
 
 
-const int TILE_SIZE = 16;
+const int kTileSize = 16;
 const int kMapWidth = 300;
 const int kMapHeight = 300;
 
