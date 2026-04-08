@@ -3,8 +3,8 @@
 
 
 const int TILE_SIZE = 16;
-const int MAP_W = 300;
-const int MAP_H = 300;
+const int kMapWidth = 300;
+const int kMapHeight = 300;
 
 const int kWindowWidth = 800;
 const int kWindowHeight = 600;

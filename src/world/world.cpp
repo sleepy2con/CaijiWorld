@@ -100,7 +100,7 @@ World::~World()
 
 void World::run()
 {
-	float camX = 0.0f, camY = 0.0f;
+	float camera_x = 0.0f, camera_y = 0.0f;
 	bool running = true;
 
 	// 用于计算 Delta Time（两帧之间的时间差），保证不同帧率下运动速度一致
@@ -140,10 +140,10 @@ void World::run()
 
 		// 示例：添加一个简单的 ImGui 调试窗口
 		ImGui::Begin("Debug Tools");
-		ImGui::Text("Camera Pos: (%.1f, %.1f)", camX, camY);
+		ImGui::Text("Camera Pos: (%.1f, %.1f)", camera_x, camera_y);
 		// 决定地图视角的变量camX，camY，
-		ImGui::SliderFloat("Camera X", &camX, 0, (float)(MAP_W * TILE_SIZE - kWindowWidth));
-		ImGui::SliderFloat("Camera Y", &camY, 0, (float)(MAP_H * TILE_SIZE - kWindowHeight));
+		ImGui::SliderFloat("Camera X", &camera_x, 0, (float)(kMapWidth * TILE_SIZE - kWindowWidth));
+		ImGui::SliderFloat("Camera Y", &camera_y, 0, (float)(kMapHeight * TILE_SIZE - kWindowHeight));
 		ImGui::End();
 
 		// 4. 更新逻辑：移动单位
@@ -159,18 +159,18 @@ void World::run()
 
 		// 6. 视口裁剪渲染（Culling）
 		// 计算当前摄像机看到的瓦片索引范围
-		int startX = std::max(0, (int)(camX / TILE_SIZE));
-		int startY = std::max(0, (int)(camY / TILE_SIZE));
+		int startX = std::max(0, (int)(camera_x / TILE_SIZE));
+		int startY = std::max(0, (int)(camera_y / TILE_SIZE));
 		// +2 是为了防止边缘切碎感（多画 1-2 格缓冲区）
-		int endX = std::min(MAP_W, (int)((camX + kWindowWidth) / TILE_SIZE) + 2);
-		int endY = std::min(MAP_H, (int)((camY + kWindowHeight) / TILE_SIZE) + 2);
+		int endX = std::min(kMapWidth, (int)((camera_x + kWindowWidth) / TILE_SIZE) + 2);
+		int endY = std::min(kMapHeight, (int)((camera_y + kWindowHeight) / TILE_SIZE) + 2);
 
 		for (int y = startY; y < endY; y++) {
 			for (int x = startX; x < endX; x++) {
 				// 计算每个格子的屏幕渲染位置：世界坐标 - 摄像机坐标
 				SDL_FRect r = {
-					(float)x * TILE_SIZE - camX,
-					(float)y * TILE_SIZE - camY,
+					(float)x * TILE_SIZE - camera_x,
+					(float)y * TILE_SIZE - camera_y,
 					(float)TILE_SIZE,
 					(float)TILE_SIZE
 				};
@@ -182,7 +182,7 @@ void World::run()
 		SDL_SetRenderDrawColor(renderer_.get(), 255, 0, 0, 255);
 		for (auto& u : units_) {
 			// 同样需要进行摄像机偏移处理
-			SDL_FRect r = { u.x - camX, u.y - camY, 8.0f, 8.0f };
+			SDL_FRect r = { u.x - camera_x, u.y - camera_y, 8.0f, 8.0f };
 			// 简单的边界剔除检查：如果单位不在屏幕内则不调用 Draw 函数
 			if (r.x + r.w > 0 && r.x < kWindowWidth && r.y + r.h > 0 && r.y < kWindowHeight) {
 				SDL_RenderFillRect(renderer_.get(), &r);
