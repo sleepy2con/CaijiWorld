@@ -139,6 +139,17 @@ void World::run()
 			if (e.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && e.window.windowID == SDL_GetWindowID(window_.get())) {
 				running = false;
 			}
+			if (e.type == SDL_EVENT_MOUSE_WHEEL) {
+				if (e.wheel.y > 0) { // 向上滚
+					zoom_level_ *= 1.1f; // 放大 10%
+				}
+				else if (e.wheel.y < 0) { // 向下滚
+					zoom_level_ *= 0.9f; // 缩小 10%
+				}
+
+				// 限制缩放范围，防止缩得太小或大得离谱
+				zoom_level_ = std::clamp(zoom_level_, 0.3f, 3.0f);
+			}
 		}
 
 		// [步骤 3] 获取键盘状态并移动小人
@@ -198,13 +209,16 @@ void World::run()
 		int startX = std::max(0, (int)(camera_x / kTileSize));
 		int startY = std::max(0, (int)(camera_y / kTileSize));
 
-		// 让摄像机中心对准小人
-		camera_x = chess_x_ - kWindowWidth / 2.0f;
-		camera_y = chess_y_ - kWindowHeight / 2.0f;
+		// 屏幕逻辑宽高度会随缩放改变
+		float visible_w = kWindowWidth / zoom_level_;
+		float visible_h = kWindowHeight / zoom_level_;
 
-		// 限制摄像机不要看到地图外的黑边
-		camera_x = std::clamp(camera_x, 0.0f, (float)kMapWidth * kTileSize - kWindowWidth);
-		camera_y = std::clamp(camera_y, 0.0f, (float)kMapHeight * kTileSize - kWindowHeight);
+		camera_x = chess_x_ - visible_w / 2.0f;
+		camera_y = chess_y_ - visible_h / 2.0f;
+
+		// 限制范围（最大值也要随缩放微调，否则边缘会有黑边）
+		camera_x = std::clamp(camera_x, 0.0f, std::max(0.0f, (float)kMapWidth * kTileSize - visible_w));
+		camera_y = std::clamp(camera_y, 0.0f, std::max(0.0f, (float)kMapHeight * kTileSize - visible_h));
 
 		// +2 是为了防止边缘切碎感（多画 1-2 格缓冲区）
 		int endX = std::min(kMapWidth, (int)((camera_x + kWindowWidth) / kTileSize) + 2);
@@ -213,22 +227,24 @@ void World::run()
 		for (int y = startY; y < endY; y++) {
 			for (int x = startX; x < endX; x++) {
 				// 计算每个格子的屏幕渲染位置：世界坐标 - 摄像机坐标
+				// 渲染瓦片循环内部
 				SDL_FRect r = {
-					(float)x * kTileSize - camera_x,
-					(float)y * kTileSize - camera_y,
-					(float)kTileSize,
-					(float)kTileSize
+					(x * kTileSize - camera_x) * zoom_level_,
+					(y * kTileSize - camera_y) * zoom_level_,
+					kTileSize * zoom_level_,
+					kTileSize * zoom_level_
 				};
 				SDL_RenderTexture(renderer_.get(), world_tile_[y][x].tex.get(), NULL, &r);
 			}
 		}
 		// ================== 渲染棋子（在地图 0,0 点） ==================
 		if (chess_texture_) {
+			// 渲染棋子
 			SDL_FRect chess_rect = {
-				chess_x_ - camera_x,          // X：减去相机偏移
-				chess_y_ - camera_y,          // Y：减去相机偏移
-				kTileSize,                        // 棋子宽度（自己改大小）
-				kTileSize                         // 棋子高度
+				(chess_x_ - camera_x) * zoom_level_,
+				(chess_y_ - camera_y) * zoom_level_,
+				kTileSize * zoom_level_,
+				kTileSize * zoom_level_
 			};
 			SDL_RenderTexture(renderer_.get(), chess_texture_.get(), nullptr, &chess_rect);
 		}
