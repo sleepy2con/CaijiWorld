@@ -33,6 +33,9 @@ private:
 	// 棋子位置（固定在 0,0）
 	float chess_x_ = 0.0f;
 	float chess_y_ = 0.0f;
+
+	// 控制镜头缩放
+	float zoom_level_ = 1.0f; // 1.0 是原大小，2.0 是放大一倍，0.5 是缩小一倍
 };
 
 #endif // !WORLD_H
