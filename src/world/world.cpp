@@ -141,6 +141,28 @@ void World::run()
 			}
 		}
 
+		// [步骤 3] 获取键盘状态并移动小人
+		const bool* keys = SDL_GetKeyboardState(nullptr);
+		float dx = 0, dy = 0;
+		if (keys[SDL_SCANCODE_W]) dy -= 1.0f;
+		if (keys[SDL_SCANCODE_S]) dy += 1.0f;
+		if (keys[SDL_SCANCODE_A]) dx -= 1.0f;
+		if (keys[SDL_SCANCODE_D]) dx += 1.0f;
+
+		// 更新第一个单位的位置（作为玩家控制的对象）我真看不懂这段，nb
+		if (chess_texture_) {
+			float speed = 200.0f; // 像素/秒
+
+			// 归一化防止斜向加速
+			if (dx != 0 && dy != 0) {
+				dx *= 0.7071f; // 1/sqrt(2)
+				dy *= 0.7071f;
+			}
+
+			chess_x_ += dx * speed * deltaTime;
+			chess_y_ += dy * speed * deltaTime;
+		}
+
 		// 3. 启动 ImGui 新帧 (必须在绘制前调用)
 		//确保字体纹理已加载到 GPU。
 		//准备图形资源。 准备好 SDL_Renderer 所需的绘制状态。
@@ -153,12 +175,12 @@ void World::run()
 		ImGui::NewFrame();			// (核心逻辑层)
 
 		// 示例：添加一个简单的 ImGui 调试窗口
-		ImGui::Begin("Debug Tools");
-		ImGui::Text("Camera Pos: (%.1f, %.1f)", camera_x, camera_y);
-		// 决定地图视角的变量camX，camY，
-		ImGui::SliderFloat("Camera X", &camera_x, 0, (float)(kMapWidth * kTileSize - kWindowWidth));
-		ImGui::SliderFloat("Camera Y", &camera_y, 0, (float)(kMapHeight * kTileSize - kWindowHeight));
-		ImGui::End();
+		//ImGui::Begin("Debug Tools");
+		//ImGui::Text("Camera Pos: (%.1f, %.1f)", camera_x, camera_y);
+		//// 决定地图视角的变量camX，camY，
+		//ImGui::SliderFloat("Camera X", &camera_x, 0, (float)(kMapWidth * kTileSize - kWindowWidth));
+		//ImGui::SliderFloat("Camera Y", &camera_y, 0, (float)(kMapHeight * kTileSize - kWindowHeight));
+		//ImGui::End();
 
 		// 4. 更新逻辑：移动单位
 		// 使用 deltaTime 替代固定步长，确保平滑
