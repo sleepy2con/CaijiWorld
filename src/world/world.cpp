@@ -197,6 +197,15 @@ void World::run()
 		// 计算当前摄像机看到的瓦片索引范围
 		int startX = std::max(0, (int)(camera_x / kTileSize));
 		int startY = std::max(0, (int)(camera_y / kTileSize));
+
+		// 让摄像机中心对准小人
+		camera_x = chess_x_ - kWindowWidth / 2.0f;
+		camera_y = chess_y_ - kWindowHeight / 2.0f;
+
+		// 限制摄像机不要看到地图外的黑边
+		camera_x = std::clamp(camera_x, 0.0f, (float)kMapWidth * kTileSize - kWindowWidth);
+		camera_y = std::clamp(camera_y, 0.0f, (float)kMapHeight * kTileSize - kWindowHeight);
+
 		// +2 是为了防止边缘切碎感（多画 1-2 格缓冲区）
 		int endX = std::min(kMapWidth, (int)((camera_x + kWindowWidth) / kTileSize) + 2);
 		int endY = std::min(kMapHeight, (int)((camera_y + kWindowHeight) / kTileSize) + 2);
