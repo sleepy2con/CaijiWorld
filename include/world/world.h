@@ -1,17 +1,19 @@
-#pragma once
+#ifndef WORLD_H
+#define WORLD_H
+
 #include <vector>
 #include <memory>
-#include <SDL3/SDL.h> // ½öÓÃÓÚ³ÖÓĞÎÆÀíÖ¸ÕëºÍäÖÈ¾¾ØĞÎ£¬ºóĞøÉõÖÁ¿ÉÒÔ½øÒ»²½°şÀë
+#include <SDL3/SDL.h> // ä»…ç”¨äºæŒæœ‰çº¹ç†æŒ‡é’ˆå’Œæ¸²æŸ“çŸ©å½¢ï¼Œåç»­ç”šè‡³å¯ä»¥è¿›ä¸€æ­¥å‰¥ç¦»
 
-// ¼ò»¯µÄÍßÆ¬ºÍµ¥Î»½á¹¹Ìå
+// ç®€åŒ–çš„ç“¦ç‰‡å’Œå•ä½ç»“æ„ä½“
 struct Tile {
     std::shared_ptr<SDL_Texture> tex;
-    // ÒÔºó¿ÉÒÔÔÚÕâÀï¼Ó£ºint temperature; (ÎÂ¶È) | bool has_wall; (ÊÇ·ñÓĞÇ½)
+    // ä»¥åå¯ä»¥åœ¨è¿™é‡ŒåŠ ï¼šint temperature; (æ¸©åº¦) | bool has_wall; (æ˜¯å¦æœ‰å¢™)
 };
 
 struct Unit {
     float x, y;
-    // ÒÔºó¿ÉÒÔÔÚÕâÀï¼Ó£ºfloat health; (ÑªÁ¿) | std::string job; (¹¤×÷)
+    // ä»¥åå¯ä»¥åœ¨è¿™é‡ŒåŠ ï¼šfloat health; (è¡€é‡) | std::string job; (å·¥ä½œ)
 };
 
 class World {
@@ -19,10 +21,10 @@ public:
     World(int width, int height);
     ~World() = default;
 
-    // ³õÊ¼»¯ÊÀ½çÊı¾İ£¨´«ÈëäÖÈ¾Æ÷ÓÃÀ´´´½¨ºÍ°ó¶¨ÎÆÀí£©
+    // åˆå§‹åŒ–ä¸–ç•Œæ•°æ®ï¼ˆä¼ å…¥æ¸²æŸ“å™¨ç”¨æ¥åˆ›å»ºå’Œç»‘å®šçº¹ç†ï¼‰
     void InitWorldData(SDL_Renderer* renderer);
 
-    // ´¿´âµÄÂß¼­¸üĞÂ£¨±ÈÈçĞ¡ÈËÂÒ×ß£©£¬ÓëäÖÈ¾ÎŞ¹Ø
+    // çº¯ç²¹çš„é€»è¾‘æ›´æ–°ï¼ˆæ¯”å¦‚å°äººä¹±èµ°ï¼‰ï¼Œä¸æ¸²æŸ“æ— å…³ 
     void Update(float deltaTime);
 
 public:
@@ -31,8 +33,9 @@ public:
     std::vector<std::vector<Tile>> world_tile_;
     std::vector<Unit> units_;
 
-    // Íæ¼Ò¿ØÖÆµÄÆå×ÓÊı¾İ
+    // ç©å®¶æ§åˆ¶çš„æ£‹å­æ•°æ®
     std::shared_ptr<SDL_Texture> chess_texture_;
     float chess_x_ = 0.0f;
     float chess_y_ = 0.0f;
 };
+#endif // !WORLD_H

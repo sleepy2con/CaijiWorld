@@ -1,4 +1,4 @@
-#include "world/world.h"
+ï»¿#include "world/world.h"
 #include "constant/constant.h"
 #include <SDL3_image/SDL_image.h>
 #include <cstdlib>
@@ -10,7 +10,7 @@ World::World(int width, int height)
 }
 
 void World::InitWorldData(SDL_Renderer* renderer) {
-    // Ö»¸ºÔğ¼ÓÔØÍ¼Æ¬ºÍÉú³ÉËæ»úµØÍ¼Êı¾İ
+    // åªè´Ÿè´£åŠ è½½å›¾ç‰‡å’Œç”Ÿæˆéšæœºåœ°å›¾æ•°æ® 
     std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surf_grass(IMG_Load("../../assets/pics/grass.png"), SDL_DestroySurface);
     std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surf_water(IMG_Load("../../assets/pics/water.png"), SDL_DestroySurface);
 
@@ -34,7 +34,7 @@ void World::InitWorldData(SDL_Renderer* renderer) {
 }
 
 void World::Update(float deltaTime) {
-    // ´¿Âß¼­£ºÈÃ NPC Ğ¡ÈËÃÇÃ¿ÃëËæ»ú×ß¶¯
+    // çº¯é€»è¾‘ï¼šè®© NPC å°äººä»¬æ¯ç§’éšæœºèµ°åŠ¨ 
     for (auto& u : units_) {
         u.x += ((rand() % 3) - 1) * 50.0f * deltaTime;
         u.y += ((rand() % 3) - 1) * 50.0f * deltaTime;
