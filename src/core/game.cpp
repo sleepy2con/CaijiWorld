@@ -51,7 +51,7 @@ namespace caijiworld {
 
         return true;
     }
-
+    // 游戏引擎是“无论有没有事件，我都必须死循环，拼命刷新画面”
     void Game::Run() {
         Uint64 last_time = SDL_GetTicks();
 
@@ -69,9 +69,13 @@ namespace caijiworld {
             RenderGame();
         }
     }
-
+    // delta_time是当前帧距离上一帧，真实世界过去了多少秒（通常是一个零点零几的小数）
+    // 电子游戏本质上是一个疯狂翻页的连环画。如果电脑性能好，一秒钟能循环 500 次（500 帧）；如果电脑卡顿，一秒钟只能循环 30 次（30 帧）
     void Game::HandleEvents(float delta_time) {
         SDL_Event e;
+        // 这里的死循环会永久卡死吗？
+        // 绝对不会。 因为 SDL_PollEvent 是非阻塞（Non - blocking）的。当这一帧所有的积压事件都被弹出、队列变空后，
+        // 它就会返回 false，程序流程立刻向下走，去执行 UpdateLogic 和 RenderGame。
         while (SDL_PollEvent(&e)) {
             ImGui_ImplSDL3_ProcessEvent(&e);
 
