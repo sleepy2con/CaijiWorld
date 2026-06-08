@@ -18,6 +18,7 @@ namespace caijiworld {
 		kHarvest
 	};
 
+
 	class Game {
 	public:
 		Game();
@@ -57,6 +58,13 @@ namespace caijiworld {
 
 		// 游戏世界
 		std::unique_ptr<World> world_;
+
+		// 💡 针对 RimWorld 八方向走格子新增的控制变量
+		int current_tile_x_ = 0;  // 小人当前所在的格子 X 坐标
+		int current_tile_y_ = 0;  // 小人当前所在的格子 Y 坐标
+		int target_tile_x_ = 0;   // 小人的目标格子 X 坐标
+		int target_tile_y_ = 0;   // 小人的目标格子 Y 坐标
+		bool is_moving_ = false;  // 小人当前是否正在网格间移动
 	};
 
 }  // namespace caijiworld
