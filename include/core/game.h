@@ -7,6 +7,7 @@
 #include <string>
 
 #include "world/world.h"
+#include "ui/ui_manager.h" // 💡 包含新头文件
 
 namespace caijiworld {
 
@@ -20,6 +21,8 @@ namespace caijiworld {
 
 
 	class Game {
+		// 💡 声明友元，让 UiManager 可以直接读写 Game 的私有变量，省去写一堆 Getter/Setter
+		friend class UiManager;
 	public:
 		Game();
 		~Game();
@@ -36,7 +39,6 @@ namespace caijiworld {
 		void HandleEvents(float delta_time);
 		void UpdateLogic(float delta_time);
 		void RenderGame();
-		void RenderUi();  // 💡 所有的 ImGui UI 组件全部收纳在这里处理
 
 		bool running_ = true;
 		int win_width_ = 1200;
@@ -55,6 +57,9 @@ namespace caijiworld {
 		// SDL 资源指针
 		SDL_Window* window_ = nullptr;
 		SDL_Renderer* renderer_ = nullptr;
+
+		// 💡 新增 UI 管理器指针
+		std::unique_ptr<UiManager> ui_manager_;
 
 		// 游戏世界
 		std::unique_ptr<World> world_;

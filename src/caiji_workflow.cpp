@@ -1,4 +1,4 @@
-// Copyright 2026 He Yuxuan. All Rights Reserved.
+﻿// Copyright 2026 He Yuxuan. All Rights Reserved.
 #include "core/game.h"
 #include "constant/constant.h"
 #include "spdlog/spdlog.h"

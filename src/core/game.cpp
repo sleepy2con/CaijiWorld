@@ -236,45 +236,9 @@ namespace caijiworld {
 		}
 
 		// --- 绘制 UI 界面 ---
-		RenderUi();
+		ui_manager_->Render(this, renderer_);
 
 		SDL_RenderPresent(renderer_);
-	}
-
-	void Game::RenderUi() {
-		ImGui_ImplSDLRenderer3_NewFrame();
-		ImGui_ImplSDL3_NewFrame();
-		ImGui::NewFrame();
-
-		// 💡 以后你想加什么 UI 组件，直接在这个函数里开辟新窗口加！非常安全。
-
-		// UI 组件 1: 仿 RimWorld 右上角时间控制器
-		ImGui::SetNextWindowPos(ImVec2(win_width_ - 220, 20), ImGuiCond_Always);
-		ImGui::Begin("Time Controls", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-		{
-			if (ImGui::Button(is_paused_ ? "▶ Play" : "⏸ Pause")) is_paused_ = !is_paused_;
-			ImGui::SameLine();
-			if (ImGui::RadioButton("1x", game_speed_ == 1)) game_speed_ = 1; ImGui::SameLine();
-			if (ImGui::RadioButton("2x", game_speed_ == 2)) game_speed_ = 2; ImGui::SameLine();
-			if (ImGui::RadioButton("4x", game_speed_ == 4)) game_speed_ = 4;
-		}
-		ImGui::End();
-
-		// UI 组件 2: 仿 RimWorld 底部菜单栏
-		ImGui::SetNextWindowPos(ImVec2(20, win_height_ - 120), ImGuiCond_Always);
-		ImGui::SetNextWindowSize(ImVec2(win_width_ - 40, 90), ImGuiCond_Always);
-		ImGui::Begin("Architect Menu", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
-		{
-			ImGui::Text("Orders:");
-			ImGui::Separator();
-			if (ImGui::Button("Build Wall", ImVec2(100, 40))) current_tool_ = UiToolType::kBuildWall; ImGui::SameLine();
-			if (ImGui::Button("Place Bed", ImVec2(100, 40))) current_tool_ = UiToolType::kPlaceBed; ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(100, 40))) current_tool_ = UiToolType::kNone;
-		}
-		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer_);
 	}
 
 	void Game::Shutdown() {
