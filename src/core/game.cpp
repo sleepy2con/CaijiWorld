@@ -1,12 +1,12 @@
 // Copyright 2026 He Yuxuan. All Rights Reserved.
-#include "core/game.h"
+#include "caijiworld/core/game.h"
 
 #include <algorithm>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl3.h"
 #include "imgui/imgui_impl_sdlrenderer3.h"
 #include "spdlog/spdlog.h"
-#include "constant/constant.h"
+#include "caijiworld/constant/constant.h"
 
 namespace caijiworld {
 

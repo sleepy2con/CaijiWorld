@@ -6,8 +6,8 @@
 #include <memory>
 #include <string>
 
-#include "world/world.h"
-#include "ui/ui_manager.h" // 💡 包含新头文件
+#include "caijiworld/world/world.h"
+#include "caijiworld/ui/ui_manager.h" // 💡 包含新头文件
 
 namespace caijiworld {
 

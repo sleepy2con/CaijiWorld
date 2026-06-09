@@ -1,10 +1,10 @@
 // Copyright 2026 He Yuxuan. All Rights Reserved.
-#include "ui/ui_manager.h"
+#include "caijiworld/ui/ui_manager.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl3.h"
 #include "imgui/imgui_impl_sdlrenderer3.h"
-#include "core/game.h"  // 💡 确保知道 Game 类的具体定义
+#include "caijiworld/core/game.h"  // 💡 确保知道 Game 类的具体定义
 
 namespace caijiworld {
 

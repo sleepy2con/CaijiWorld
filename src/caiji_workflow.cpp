@@ -1,6 +1,6 @@
-﻿// Copyright 2026 He Yuxuan. All Rights Reserved.
-#include "core/game.h"
-#include "constant/constant.h"
+// Copyright 2026 He Yuxuan. All Rights Reserved.
+#include "caijiworld/core/game.h"
+#include "caijiworld/constant/constant.h"
 #include "spdlog/spdlog.h"
 
 int main(int argc, char* argv[]) {
