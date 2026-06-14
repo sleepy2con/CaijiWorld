@@ -6,6 +6,14 @@
 
 namespace caijiworld {
 
+	// 抽象出当前 UI 的选择状态，方便逻辑层读取
+	enum class UiToolType {
+		kNone,
+		kBuildWall,
+		kPlaceBed,
+		kSelect       // 👈 新增：选中/查看模式
+	};
+
 	// 前置声明 Game 类，避免循环引用
 	class Game;
 
@@ -14,7 +22,6 @@ namespace caijiworld {
 		UiManager() = default;
 		~UiManager() = default;
 
-		// 禁止拷贝
 		UiManager(const UiManager&) = delete;
 		UiManager& operator=(const UiManager&) = delete;
 

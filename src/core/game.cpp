@@ -82,19 +82,21 @@ namespace caijiworld {
 			if (e.type == SDL_EVENT_QUIT) running_ = false;
 			if (e.type == SDL_EVENT_MOUSE_WHEEL) {
 				zoom_level_ += e.wheel.y * 0.1f;
+				// cpp17，限制变量大小在0.3和3之间
 				zoom_level_ = std::clamp(zoom_level_, 0.3f, 3.0f);
 			}
 
-			// 💡 演示：如何处理 UI 状态与鼠标点击世界格子的交互
 			if (e.type == SDL_EVENT_MOUSE_BUTTON_DOWN && e.button.button == SDL_BUTTON_LEFT) {
-				// 如果当前鼠标点在了 ImGui 的 UI 窗口上，不要触发游戏世界的建造
+				// 如果当前鼠标点在了 ImGui 的 UI 窗口上，不要触发游戏世界的建造或选中
 				if (ImGui::GetIO().WantCaptureMouse) {
 					continue;
 				}
 
-				// 计算点击位置对应的游戏世界坐标
+				// --- 沿用你原本完美的坐标转换逻辑 ---
+				// 
 				float mouse_x = e.button.x;
 				float mouse_y = e.button.y;
+				//算出了缩放后当前屏幕里横向和纵向究竟塞了多少个世界单位的区域。
 				float visible_w = win_width_ / zoom_level_;
 				float visible_h = win_height_ / zoom_level_;
 
@@ -104,11 +106,20 @@ namespace caijiworld {
 				int tile_x = static_cast<int>(world_click_x / kTileSize);
 				int tile_y = static_cast<int>(world_click_y / kTileSize);
 
-				// 根据 UI 选中的工具执行建造
-				if (current_tool_ == UiToolType::kBuildWall) {
-					spdlog::info("UI Command: Build wall at grid ({}, {})", tile_x, tile_y);
-					// world_->BuildWallAt(tile_x, tile_y); // 实际调用世界格子更新
+				// --- 💡 核心修改：根据 UI 工具状态执行不同逻辑 ---
+				if (current_tool_ == UiToolType::kSelect) {
+					// 确保没有点出地图边界
+					if (tile_x >= 0 && tile_x < kMapWidth && tile_y >= 0 && tile_y < kMapHeight) {
+						selected_tile_x_ = tile_x;
+						selected_tile_y_ = tile_y;
+						spdlog::info("Successfully selected tile at: ({}, {})", tile_x, tile_y);
+					}
 				}
+				else if (current_tool_ == UiToolType::kBuildWall) {
+					spdlog::info("UI Command: Build wall at grid ({}, {})", tile_x, tile_y);
+					// world_->BuildWallAt(tile_x, tile_y); 
+				}
+				// ... 其他工具
 			}
 		}
 
@@ -177,7 +188,7 @@ namespace caijiworld {
 			}
 		}
 
-		// 保持摄像机跟随 (保持你原本的代码不变)
+		// 保持摄像机跟随 
 		float visible_w = win_width_ / zoom_level_;
 		float visible_h = win_height_ / zoom_level_;
 		camera_x_ = std::clamp(world_->chess_x_ - visible_w / 2.0f, 0.0f,

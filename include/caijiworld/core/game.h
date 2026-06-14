@@ -11,15 +11,6 @@
 
 namespace caijiworld {
 
-	// 抽象出当前 UI 的选择状态，方便逻辑层读取
-	enum class UiToolType {
-		kNone,
-		kBuildWall,
-		kPlaceBed,
-		kHarvest
-	};
-
-
 	class Game {
 		// 💡 声明友元，让 UiManager 可以直接读写 Game 的私有变量，省去写一堆 Getter/Setter
 		friend class UiManager;
@@ -70,6 +61,9 @@ namespace caijiworld {
 		int target_tile_x_ = 0;   // 小人的目标格子 X 坐标
 		int target_tile_y_ = 0;   // 小人的目标格子 Y 坐标
 		bool is_moving_ = false;  // 小人当前是否正在网格间移动
+
+		int selected_tile_x_ = -1;  // 👈 当前选中的格子X坐标
+		int selected_tile_y_ = -1;  // 👈 当前选中的格子Y坐标
 	};
 
 }  // namespace caijiworld

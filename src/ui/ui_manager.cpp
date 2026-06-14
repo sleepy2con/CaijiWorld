@@ -39,29 +39,37 @@ namespace caijiworld {
         }
         ImGui::End();
 
-        // UI 组件 2: 底部菜单栏
-        ImGui::SetNextWindowPos(ImVec2(20, game->win_height_ - 120), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(game->win_width_ - 40, 90), ImGuiCond_Always);
-        ImGui::Begin("Architect Menu", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
-        {
-            ImGui::Text("Orders:");
-            ImGui::Separator();
+		// UI 组件 2: 底部菜单栏
+		ImGui::SetNextWindowPos(ImVec2(20, game->win_height_ - 120), ImGuiCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(game->win_width_ - 40, 90), ImGuiCond_Always);
+		ImGui::Begin("Architect Menu", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+		{
+			ImGui::Text("Orders:");
+			ImGui::Separator();
 
-            if (ImGui::Button("Build Wall", ImVec2(100, 40))) {
-                game->current_tool_ = UiToolType::kBuildWall;
-            }
-            ImGui::SameLine();
+			// 💡 新增：点击这个按钮进入“选中/查看”模式
+			if (ImGui::Button("选择", ImVec2(100, 40))) {
+				game->current_tool_ = UiToolType::kSelect;
+			}
+			ImGui::SameLine();
 
-            if (ImGui::Button("Place Bed", ImVec2(100, 40))) {
-                game->current_tool_ = UiToolType::kPlaceBed;
-            }
-            ImGui::SameLine();
+			if (ImGui::Button("造墙", ImVec2(100, 40))) {
+				game->current_tool_ = UiToolType::kBuildWall;
+			}
+			ImGui::SameLine();
 
-            if (ImGui::Button("Cancel", ImVec2(100, 40))) {
-                game->current_tool_ = UiToolType::kNone;
-            }
-        }
-        ImGui::End();
+			if (ImGui::Button("Place Bed", ImVec2(100, 40))) {
+				game->current_tool_ = UiToolType::kPlaceBed;
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Button("Cancel", ImVec2(100, 40))) {
+				game->current_tool_ = UiToolType::kNone;
+				game->selected_tile_x_ = -1; // 取消时顺便清空选中状态
+				game->selected_tile_y_ = -1;
+			}
+		}
+		ImGui::End();
 
         ImGui::Render();
         ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
