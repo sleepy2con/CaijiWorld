@@ -68,7 +68,7 @@ set(SPDLOG_HEADER_ONLY OFF)
 # 💡 核心修改：将自己写的代码与第三方库隔离，用 SYSTEM 关键字让编译器闭嘴
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include
 )
 
 target_include_directories(${PROJECT_NAME}
