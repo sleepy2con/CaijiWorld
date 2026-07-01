@@ -37,6 +37,18 @@ set(CAIJIWORLD_SRC_FILES
     # include/caijiworld/entity/xxx.h
     # src/entity/xxx.cpp
 
+# --- input 模块 ---
+    include/caijiworld/input/input_manager.h
+    src/input/input_manager.cpp
+
+    # --- render 模块 ---
+    include/caijiworld/render/viewport.h
+    src/render/viewport.cpp
+
+    # --- control 模块 ---
+    include/caijiworld/control/player_controller.h
+    src/control/player_controller.cpp
+
     # --- utils 模块 ---
     # include/caijiworld/utils/xxx.h
     # src/utils/xxx.cpp
